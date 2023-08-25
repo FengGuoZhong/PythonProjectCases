@@ -16,13 +16,7 @@ class WeiboSpider(scrapy.Spider):
     longText_url = 'https://weibo.com/ajax/statuses/longtext?id={}'
 
     headers = {
-        "Cookie": "SINAGLOBAL=4762606171177.985.1692773258306; ULV=1692837930006:2:2:2:5391596155029.152.1692837929986:1692773258359; wb_view_log=1366*7681; un=15010046492; WBPSESS=Dt2hbAUaXfkVprjyrAZT_H2W169NZ9goB0dG_NoS6qox_9-zpr3ehwWnEYU4mmgKD89pBfgW8tOG44FHW5bBRe6IeD6EZm0SDK08T0U-PA--nxYI3ZkJ2DHvJ3QRwFNaGSvve-XiK5VJnVn-HsUDdrLc-dghtv5troELV5oNHQuVO3czUtPvJ2hdw8D3OtIkrmj6e2zjUHc_nKhddNAICQ==; XSRF-TOKEN=rpwdNNajpbs9LsvvDMb51xzE; SSOLoginState=1692867003; SCF=AnO8qNvlaAiHidL4B8fB4F0oCWjzpgNDNgUQukbawRjJJREmrtrtDgm7n2WBZu6_BolBa2hIwS-e6GsfXUAioV0.; SUB=_2A25J42m8DeRhGeNN41IW-S7Myz2IHXVqmdx0rDV8PUNbmtANLU7mkW9NSYb7hheoeV5tWbSQXm5XtZwLWmyiVy2E; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W57gP.kESaXpCF-Mjad2-9l5JpX5KzhUgL.Fo-01h5N1K57eh22dJLoIp7LxKML1KBLBKnLxKqL1hnLBoMfe0n7S0.7eh5p; ALF=1724403051",
-        "X-Requested-With": "XMLHttpRequest",
-        "Sec-Ch-Ua-Mobile": "?0",
-        "Sec-Ch-Ua-Platform": '"Windows"',
-        "Sec-Ch-Ua-Dest": "document",
-        "Sec-Ch-Ua-Site": "none",
-        "Sec-Ch-Ua-User": "?1",
+        "Cookie": "XSRF-TOKEN=Z_ffzq7WE7qZLbk5hfFT7x66; SUB=_2AkMTu-sxf8NxqwJRmf8cz2ngaY11yw7EieKl5xrqJRMxHRl-yT9kqhxYtRB6ODvF3nbjH3GM5x4KAlzWCm39e4cH1ES1; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9WhQOx3fU4gdnhT0uzOJQx5V; WBPSESS=xvhb-0KtQV-0lVspmRtycxA4ZzJDTvIQ5yaFPZNCxo7f1JvEU8XycMSJBJnYPE5MSbH3RO-xMEJ2emZOVafj7CY-l6xTdMUZaM44NmjgYINYt6AQRQcdPQmdDfa_2mdw",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
     }
 
@@ -42,60 +36,66 @@ class WeiboSpider(scrapy.Spider):
 
             data = response.json()
             if data['ok'] == 1:
-                for statuse in data['statuses']:
-                    screen_name = statuse['user']['screen_name'] #发布人
-                    created_at = statuse['created_at'] #发布时间
-                    text_raw = statuse['text_raw'] #内容
-                    text = statuse['text']
-                    reposts_count = statuse['reposts_count'] #转发数
-                    comments_count = statuse['comments_count'] #评论数
-                    attitudes_count = statuse['attitudes_count'] #点赞数
-                    isLongText = statuse['isLongText'] #长文本
-                    mblogid = statuse['mblogid']
+                for statuse in data.get('statuses'):
 
                     item = WeibospiderItem()
-                    item['screen_name'] = screen_name
-                    item['created_at'] = created_at
-                    item['text_raw'] = text_raw
-                    item['text'] = pq(text).text()
-                    item['reposts_count'] = reposts_count
-                    item['comments_count'] = comments_count
-                    item['attitudes_count'] = attitudes_count
-                    item['isLongText'] = isLongText
-                    item['mblogid'] = mblogid
-                    #print(item)
 
-                    #yield item
+                    #用户信息
+                    user_info = statuse.get('user')
+                    item['user_id'] = user_info.get('id')  # 发布人id
+                    item['screen_name'] = user_info.get('screen_name')  # 发布者昵称
 
+                    #微博信息
+                    item['weibo_id'] = statuse.get('id')  # 微博id
+                    item['created_at'] = statuse.get('created_at') #发布时间
+                    item['region_name'] = statuse.get('region_name') #发布于
+                    item['source'] = statuse.get('source') #来源
+                    item['text'] = pq(statuse.get('text')).text() #微博内容
+                    item['reposts_count'] = statuse.get('reposts_count') #转发数
+                    item['comments_count']  = statuse.get('comments_count') #评论数
+                    item['attitudes_count']  = statuse.get('attitudes_count') #点赞数
 
-                    _longText_url = self.longText_url.format(mblogid)
+                    item['pic_num'] = statuse.get('pic_num')  #该条微博包含的图片数
+                    item['pic'] = []  # 用于保存该条微博图片的 url
+                    if item['pic_num'] > 0:
+                        pic_dict = statuse.get('pic_infos')
+                        print('pic_dict:',pic_dict)
+                        for i in pic_dict:
+                            pic_url = pic_dict[i]['original']['url']
+                            item['pic'].append(pic_url)
+                    else:
+                        pass
 
+                    isLongText = statuse.get('isLongText')  #是否长文本，True时可展开
+                    mblogid = statuse.get('mblogid') #长文本id
 
+                    item['mblogid']  = statuse.get('mblogid') #评论数
+                    item['isLongText']  = statuse.get('isLongText') #点赞数
+
+                    url = self.longText_url.format(mblogid)
                     if isLongText == True:
-                        print(_longText_url, isLongText)
-                        json_longtext = self.get_response_json(_longText_url)
+                        print(url, isLongText)
+                        #json_longtext = self.get_response_json(_longText_url)
                         #item['text'] = json_longtext.get('data').get('longTextContent')
 
-                        # yield scrapy.Request(
-                        #     url='https://weibo.com/ajax/statuses/longtext?id=Ng2C2ts5s',
-                        #     callback=self.longTextParse,
-                        #     meta={'item': item},
-                        #     headers = self.headers
-                        #
-                        # )
+                        yield scrapy.Request(
+                            url=url,
+                            callback=self.longTextParse,
+                            meta={'item': item}
+                        )
                     else:
                         yield item
 
-
+    #长文本接口
     def longTextParse(self,response):
         print(response)
-        print(response.text)
-        # item = response.meta.get('item')
-        # print(item)
-        # data = response.json()
-        # if data['http_code'] == 200 and data['ok'] == 1:
-        #     item['longTextContent'] = data['data']['longTextContent']
-        #     yield item
+        #print(response.text)
+        item = response.meta.get('item')
+        data = response.json()
+        #print(data)
+        if data['http_code'] == 200 and data['ok'] == 1 and data['data']:
+            item['text'] = data['data']['longTextContent']
+            yield item
 
     def get_response_json(self,url):
         response = requests.get(url, headers=self.headers)

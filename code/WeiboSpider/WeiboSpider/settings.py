@@ -32,17 +32,18 @@ DOWNLOAD_DELAY = 3
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-# DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
-# }
+DEFAULT_REQUEST_HEADERS = {
+   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+   'Accept-Language': 'en',
+   'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+   'Cookie': 'XSRF-TOKEN=Z_ffzq7WE7qZLbk5hfFT7x66; SUB=_2AkMTu-sxf8NxqwJRmf8cz2ngaY11yw7EieKl5xrqJRMxHRl-yT9kqhxYtRB6ODvF3nbjH3GM5x4KAlzWCm39e4cH1ES1; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9WhQOx3fU4gdnhT0uzOJQx5V; WBPSESS=xvhb-0KtQV-0lVspmRtycxA4ZzJDTvIQ5yaFPZNCxo7f1JvEU8XycMSJBJnYPE5MSbH3RO-xMEJ2emZOVafj7CY-l6xTdMUZaM44NmjgYINYt6AQRQcdPQmdDfa_2mdw',
+}
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
