@@ -7,7 +7,6 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import pymysql
-from twisted.enterprise import adbapi
 
 
 class WeibospiderPipeline:
@@ -44,11 +43,9 @@ class WeibospiderPipeline:
     def process_item(self, item, spider):
         # 执行sql语句
         self.cursor = self.conn.cursor()
-        sql = 'insert into t_weibo (weibo_id,user_id,screen_name,created_at,region_name,source,text,reposts_count,comments_count,attitudes_count,pic_num,pic) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-        args = (item['weibo_id'], item['user_id'], item['screen_name'], item['created_at'],item['region_name'], item['source'],item['text'], item['reposts_count'], item['comments_count'], item['attitudes_count'], item['pic_num'],item['pic'])
+        sql = 'insert into t_weibo (weibo_id,user_id,screen_name,created_at,region_name,source,text,reposts_count,comments_count,attitudes_count,pic_num,pic,media_video) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+        args = (item['weibo_id'], item['user_id'], item['screen_name'], item['created_at'],item['region_name'], item['source'],item['text'], item['reposts_count'], item['comments_count'], item['attitudes_count'], item['pic_num'],item['pic'],item['media_video'])
 
-        #print(sql)
-        print(args)
         # 事务处理
         try:
             self.cursor.execute(sql, list(args))

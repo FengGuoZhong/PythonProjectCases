@@ -95,5 +95,5 @@ MYSQL_DB_CONFIG = {
    'USER':'root',
    'PASSWORD':'123456',
    'DATABASE':'weibo_db',
-   'charset':'utf8'
+   'charset':'utf8mb4'
 }

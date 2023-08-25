@@ -23,4 +23,5 @@ class WeibospiderItem(scrapy.Item):
     pic = scrapy.Field()
     mblogid = scrapy.Field()
     isLongText = scrapy.Field()
+    media_video = scrapy.Field()
 
