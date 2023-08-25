@@ -89,3 +89,11 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+MYSQL_DB_CONFIG = {
+   'HOST':'localhost',
+   'PORT':3306,
+   'USER':'root',
+   'PASSWORD':'123456',
+   'DATABASE':'weibo_db',
+   'charset':'utf8'
+}

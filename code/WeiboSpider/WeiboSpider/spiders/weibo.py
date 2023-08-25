@@ -1,6 +1,7 @@
 import scrapy
 from WeiboSpider.items import WeibospiderItem
 from pyquery import PyQuery as pq
+import json
 
 from urllib.parse import urlencode
 import requests
@@ -59,12 +60,23 @@ class WeiboSpider(scrapy.Spider):
                     item['pic'] = []  # 用于保存该条微博图片的 url
                     if item['pic_num'] > 0:
                         pic_dict = statuse.get('pic_infos')
-                        print('pic_dict:',pic_dict)
-                        for i in pic_dict:
-                            pic_url = pic_dict[i]['original']['url']
-                            item['pic'].append(pic_url)
+
+                        if  pic_dict == None:
+                            print('pic_dict:', pic_dict)
+                            print(item)
+
+                        try:
+                            for i in pic_dict:
+                                pic_url = pic_dict[i]['original']['url']
+                                item['pic'].append(pic_url)
+                        except:
+                            pass
+
+                    #图片列表为空处理
+                    if item['pic'] == []:
+                        item['pic'] = None
                     else:
-                        pass
+                        item['pic'] = json.dumps(item['pic'])
 
                     isLongText = statuse.get('isLongText')  #是否长文本，True时可展开
                     mblogid = statuse.get('mblogid') #长文本id
