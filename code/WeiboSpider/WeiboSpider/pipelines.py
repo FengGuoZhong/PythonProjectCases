@@ -41,6 +41,7 @@ class WeibospiderPipeline:
         print(self.conn)
 
     def process_item(self, item, spider):
+        #print(item)
         # 执行sql语句
         self.cursor = self.conn.cursor()
         sql = 'insert into t_weibo (weibo_id,user_id,screen_name,created_at,region_name,source,text,reposts_count,comments_count,attitudes_count,pic_num,pic,media_video) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
@@ -50,6 +51,7 @@ class WeibospiderPipeline:
         try:
             self.cursor.execute(sql, list(args))
             self.conn.commit()
+            print(item['weibo_id'],'-ok')
         except Exception as e:
             print(e)
             self.conn.rollback()

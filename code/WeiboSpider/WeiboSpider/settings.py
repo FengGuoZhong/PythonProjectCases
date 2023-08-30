@@ -41,8 +41,11 @@ COOKIES_ENABLED = False
 DEFAULT_REQUEST_HEADERS = {
    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
    'Accept-Language': 'en',
+   'Referer':'https://weibo.com/newlogin?tabtype=weibo&gid=102803&openLoginLayer=0&url=https%3A%2F%2Fweibo.com%2F',
    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-   'Cookie': 'XSRF-TOKEN=Z_ffzq7WE7qZLbk5hfFT7x66; SUB=_2AkMTu-sxf8NxqwJRmf8cz2ngaY11yw7EieKl5xrqJRMxHRl-yT9kqhxYtRB6ODvF3nbjH3GM5x4KAlzWCm39e4cH1ES1; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9WhQOx3fU4gdnhT0uzOJQx5V; WBPSESS=xvhb-0KtQV-0lVspmRtycxA4ZzJDTvIQ5yaFPZNCxo7f1JvEU8XycMSJBJnYPE5MSbH3RO-xMEJ2emZOVafj7CY-l6xTdMUZaM44NmjgYINYt6AQRQcdPQmdDfa_2mdw',
+   #'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0',
+   'Cookie': 'SINAGLOBAL=4762606171177.985.1692773258306; un=15010046492; ULV=1693290767002:3:3:1:1149081069544.251.1693290766999:1692837930006; WBPSESS=Dt2hbAUaXfkVprjyrAZT_FIivS-p7Sv3G4yuvSnulja73PCxWkqPBXxKLDufEZHNHgxWfHWgYqxVLsaGkID_c-2jbQW2jO0h7AdoXCwx_Yt0kViUOiczrMqS3ozfFuClK56MQnBeAAIXcLW4Xlx_an9uwQ80Fs9_VTaBuSBKHuktCOhDeAIZYiDJrPEbHQYK7d21iJV5DcfBttwwwuxmxg==; XSRF-TOKEN=JZCLv30CKfxOu9onbBeFQV3u; SSOLoginState=1693356715; SCF=AnO8qNvlaAiHidL4B8fB4F0oCWjzpgNDNgUQukbawRjJB08B05FZ1Hu7uuPeONDIzhY7Z4axc7SSXsB-7FCspFc.; SUB=_2A25J6uL7DeRhGeNN41IW-S7Myz2IHXVqnlMzrDV8PUNbmtANLULxkW9NSYb7hkqwKNOnApN_yX7YNa-dABvQPODm; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W57gP.kESaXpCF-Mjad2-9l5JpX5KzhUgL.Fo-01h5N1K57eh22dJLoIp7LxKML1KBLBKnLxKqL1hnLBoMfe0n7S0.7eh5p; ALF=1724892715',
+
 }
 
 # Enable or disable spider middlewares

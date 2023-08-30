@@ -5,6 +5,8 @@
 
 from scrapy import signals
 
+from fake_useragent import UserAgent
+
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
@@ -78,6 +80,8 @@ class WeibospiderDownloaderMiddleware:
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
+        # ua = UserAgent()
+        # request.headers["User-Agent"] = ua.random   #随机取出一个UserAgent
         return None
 
     def process_response(self, request, response, spider):
